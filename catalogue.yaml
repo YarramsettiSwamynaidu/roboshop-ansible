@@ -18,7 +18,7 @@
   - name: "create directory"
     ansible.builtin.file:
       name: /app
-      state: diectory
+      state: directory
 
   - name: "downloading code"
     ansible.builtin.get_url:
