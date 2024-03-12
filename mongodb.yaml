@@ -30,3 +30,22 @@
       name: mongod
       state: restarted 
 
+  - name: "Setup the MongoDB repo file"
+    ansible.builtin.copy: 
+      src: mongo.repo 
+      dest: /etc/yum.repos.d/mongo.repo
+
+  - name: "install mangodb cliaent"
+    ansible.builtin.package: 
+      name: mongodb-client
+      state: present
+  
+  - name: "get the catelogue count"
+    ansible.builtin.command: mongo', '--host', '44.200.128.125', '--quiet', '--eval', 'db = db.getSiblingDB(\"catalogue\"); db.products.count()'
+      register: count
+  - name: "print the product count"
+    ansible.builtin.debug:
+      msg: "Product count:{{count}}"    
+  
+      
+
