@@ -34,7 +34,7 @@
   - name: "install dependencies"
     ansible.builtin.gcommand: npn install
     args:
-        chdir: /app
+      chdir: /app
 
   - name: "copy catalogue.service"
     ansible.builtin.copy:
