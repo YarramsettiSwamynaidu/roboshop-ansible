@@ -32,7 +32,7 @@
       remote_src: yes
 
   - name: "install dependencies"
-    ansible.builtin.gcommand: npn install
+    ansible.builtin.command: npn install
     args:
       chdir: /app
 
