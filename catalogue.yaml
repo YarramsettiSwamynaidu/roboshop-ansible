@@ -69,7 +69,7 @@
   #     msg: "Product count:{{product_count}}"  
 
   - name: "load the catologue data"
-    ansible.builtin.command: mongo --host 44.202.184.147 </app/schema/catalogue.js
+    ansible.builtin.command: mongo --host 44.202.184.147 < /app/schema/catalogue.js
     when: product_count.stdout == "0"
   
   - name: "enabled and started catalogue"
