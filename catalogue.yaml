@@ -64,9 +64,9 @@
     ansible.builtin.command: mongo --host 44.202.184.147 --quiet --eval 'db = db.getSiblingDB("catalogue"); db.products.count()'
     register: product_count
 
-  # - name: "print the product count"
-  #   ansible.builtin.debug:
-  #     msg: "Product count:{{count}}"  
+  - name: "print the product count"
+    ansible.builtin.debug:
+      msg: "Product count:{{product_count}}"  
 
   - name: "load the catologue data"
     ansible.builtin.command: mongo --host 44.202.184.147 </app/schema/catalogue.js
