@@ -2,7 +2,7 @@
   hosts: mongodb
   become: yes
   tasks:
-  
+
   - name: "Setup the MongoDB repo file"
     ansible.builtin.copy: 
       src: mongo.repo 
@@ -23,7 +23,7 @@
     ansible.builtin.replace:
       path: /etc/mongod.conf
       regexp: '127.0.0.1'
-      replcae: '0.0.0.0'
+      replace: '0.0.0.0'
     
 
   - name: "enabled and started mongodb"
