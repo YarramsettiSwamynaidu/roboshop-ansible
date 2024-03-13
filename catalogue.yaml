@@ -50,27 +50,27 @@
     ansible.builtin.systemd_service:
       daemon_reload: true
 
-  # - name: "Setup the MongoDB repo file"
-  #   ansible.builtin.copy: 
-  #     src: mongo.repo 
-  #     dest: /etc/yum.repos.d/mongo.repo
+  - name: "Setup the MongoDB repo file"
+    ansible.builtin.copy: 
+      src: mongo.repo 
+      dest: /etc/yum.repos.d/mongo.repo
 
-  # - name: "install mangodb cliaent"
-  #   ansible.builtin.package: 
-  #     name: mongodb-client
-  #     state: present
+  - name: "install mangodb cliaent"
+    ansible.builtin.package: 
+      name: mongodb-client
+      state: present
   
-  # - name: "get the catelogue count"
-  #   ansible.builtin.command: mongo', '--host', '44.200.128.125', '--quiet', '--eval', 'db = db.getSiblingDB(\"catalogue\"); db.products.count()'
-  #     register: count
+  - name: "get the catelogue count"
+    ansible.builtin.command: mongo', '--host', '44.202.184.147', '--quiet', '--eval', 'db = db.getSiblingDB(\"catalogue\"); db.products.count()'
+      register: count
 
   # - name: "print the product count"
   #   ansible.builtin.debug:
   #     msg: "Product count:{{count}}"  
 
-  # - name: "load the catologue data"
-  #   ansible.builtin.command: mongo --host 44.200.128.125 </app/schema/catalogue.js
-  #   when: count.stdout == "0"
+  - name: "load the catologue data"
+    ansible.builtin.command: mongo --host 44.202.184.147 </app/schema/catalogue.js
+    when: count.stdout == "0"
   
   - name: "enabled and started catalogue"
     ansible.builtin.service:
