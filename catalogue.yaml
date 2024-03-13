@@ -57,7 +57,7 @@
 
   - name: "install mangodb cliaent"
     ansible.builtin.package: 
-      name: mongodb-client
+      name: mongodb-org-shell
       state: present
   
   - name: "get the catelogue count"
