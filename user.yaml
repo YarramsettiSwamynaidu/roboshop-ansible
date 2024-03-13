@@ -1,0 +1,80 @@
+- name: user
+  hosts: user
+  become: yes
+  tasks:
+
+  - name: "disable and enable nodejs"
+    ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
+
+  - name: "install nodejs"
+    ansible.builtin.package:
+      name: nodejs
+      state: present
+
+  - name: "create roboshop"
+    ansible.builtin.user:
+      name: roboshop
+
+  # - name: "remove directory"
+  #   ansible.builtin.file:
+  #     name: /app
+  #     state: absent 
+
+  - name: "create directory"
+    ansible.builtin.file:
+      name: /app
+      state: directory
+
+  - name: "downloading code"
+    ansible.builtin.get_url:
+      url: https://roboshop-builds.s3.amazonaws.com/user.zip
+      dest: /tmp
+
+  - name: "unzip the code file"
+    ansible.builtin.unarchive:
+      src: /tmp/user.zip
+      dest: /app
+      remote_src: yes
+
+  - name: "install dependencies"
+    ansible.builtin.command: npm install
+    args:
+      chdir: /app
+
+  - name: "copy user.service"
+    ansible.builtin.copy:
+      src: user.service
+      dest: /etc/systemd/system/user.service 
+
+  - name: "daemon_reloa and start"
+    ansible.builtin.systemd_service:
+      daemon_reload: true
+
+  - name: "Setup the MongoDB repo file"
+    ansible.builtin.copy: 
+      src: mongo.repo 
+      dest: /etc/yum.repos.d/mongo.repo
+
+  - name: "install mangodb cliaent"
+    ansible.builtin.package: 
+      name: mongodb-org-shell
+      state: present
+  
+  - name: "get the catelogue count"
+    ansible.builtin.command: mongo --host 44.202.184.147 --quiet --eval 'db = db.getSiblingDB("user"); db.products.count()'
+    register: product_count
+
+  # - name: "print the product count"
+  #   ansible.builtin.debug:
+  #     msg: "Product count:{{product_count}}"  
+
+  - name: "load the catologue data"
+    ansible.builtin.command: mongo --host 44.202.184.147 < /app/schema/user.js
+    when: product_count.stdout == "0"
+  
+  - name: "enabled and started user"
+    ansible.builtin.service:
+      name: user
+      state: restarted
+      enabled: yes
+    
