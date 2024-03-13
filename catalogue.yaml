@@ -70,7 +70,7 @@
 
   # - name: "load the catologue data"
   #   ansible.builtin.command: mongo --host 44.200.128.125 </app/schema/catalogue.js
-  #   when: count.stdout == 0
+  #   when: count.stdout == "0"
   
   - name: "enabled and started catalogue"
     ansible.builtin.service:
